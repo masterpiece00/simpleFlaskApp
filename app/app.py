@@ -6,6 +6,7 @@ from passlib.hash import sha256_crypt
 from functools import wraps
 
 app = Flask(__name__)
+app.secret_key = 'secret123'
 app.debug = True
 
 # Config MySQL
@@ -74,7 +75,7 @@ def register():
 
 		flash('You are now registered and can log in', 'success')
 
-		redirect(url_for('login'))
+		return redirect(url_for('login'))
 	return render_template('register.html', form=form)
 
 # User Login
@@ -131,7 +132,7 @@ def is_logged_in(f):
 def logout():
 	session.clear()
 	flash('You are logged out', 'success')
-	return redirect(url_for('login'))
+	return redirect(url_for('home'))
 
 # Dashboard
 @app.route('/dashboard')
@@ -140,5 +141,4 @@ def dashboard():
 	return render_template('dashboard.html')
 
 if __name__ == '__main__':
-	app.secret_key = 'secret123'
 	app.run()
